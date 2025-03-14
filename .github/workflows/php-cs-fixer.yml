@@ -1,14 +1,10 @@
 name: PHP-CS-Fixer
 
 on:
-  pull_request:
-    paths:
-      - '**.php'
-      - '.php-cs-fixer.dist.php'
   push:
-    paths:
-      - '**.php'
-      - '.php-cs-fixer.dist.php'
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   php-cs-fixer:
