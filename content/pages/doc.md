@@ -26,8 +26,8 @@ A lightweight, Symfony-based CMS that lets you create beautiful blogs and websit
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/rrr63/markflatCMS.git
-cd markflatCMS
+git clone https://github.com/auvernhatinternet/markflat.git
+cd markflat
 ```
 
 2. Install dependencies:
@@ -328,7 +328,7 @@ The project uses GitHub Actions for continuous integration, automatically runnin
 ## 📦 Directory Structure
 
 ```
-markflatCMS/
+markflat/
 ├── posts/              # Your Markdown posts
 ├── public/             # Web root
 ├── src/                # Source code
