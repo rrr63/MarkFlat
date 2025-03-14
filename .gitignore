@@ -18,3 +18,4 @@ node_modules/
 .php-cs-fixer.cache
 /public/lib/
 /public/css/
+package-lock.json
