@@ -15,3 +15,5 @@ Write in `PHP`, `Twig`, `Symfony`, `Tailwind CSS`
   ]
 }
 [/MAP]
+
+![alt text for screen readers](/assets/images/PHP-logo.png "Text to show on mouseover")

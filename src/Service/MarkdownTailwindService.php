@@ -21,8 +21,17 @@ class MarkdownTailwindService
         $this->mapService = $mapService;
     }
 
+    private function getBaseUrl(): string
+    {
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $baseDir = dirname($_SERVER['SCRIPT_NAME']);
+        return rtrim($protocol . $host . $baseDir, '/');
+    }
+
     public function convert(string $content): string
     {
+        $baseUrl = $this->getBaseUrl();
         $codeBlocks = [];
         $content = preg_replace_callback('/```.*?\n(.*?)```/s', function ($matches) use (&$codeBlocks) {
             $placeholder = '<!-- CODE_BLOCK_' . count($codeBlocks) . ' -->';
@@ -102,7 +111,13 @@ class MarkdownTailwindService
         $html = str_replace('<hr>', '<hr class="border-t ' . $theme['container'] . 'p-1 my-6">', $html);
 
         // Images
-        $html = preg_replace('/<img(.*?)>/', '<img$1 class="rounded mx-auto d-block">', $html);
+        $html = preg_replace_callback('/<img(.*?)src="([^"]*)"([^>]*)>/', function ($matches) use ($baseUrl) {
+            $src = $matches[2];
+            if (preg_match('/^\/[^\/]/', $src) && !preg_match('/^(http|https|www)/', $src)) {
+                $src = $baseUrl . $src;
+            }
+            return '<img' . $matches[1] . 'src="' . $src . '"' . $matches[3] . ' class="rounded mx-auto d-block">';
+        }, $html);
 
         // Tables using container style
         $html = str_replace('<table>', '<table class="' . $theme['table'] . ' min-w-full shadow rounded">', $html);

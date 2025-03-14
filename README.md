@@ -26,6 +26,15 @@ A lightweight, Symfony-based CMS that lets you create beautiful blogs and websit
 
 ### Installation
 
+#### With docker
+
+1. Build the image:
+```bash
+docker build -t symfony-app . 
+docker run -dit --name my-symfony-app -p 8080:80 -v "$PWD":/var/www/html symfony-app
+```
+#### With github
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/auvernhatinternet/markflat.git
