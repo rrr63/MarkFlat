@@ -30,8 +30,8 @@ A lightweight, Symfony-based CMS that lets you create beautiful blogs and websit
 
 1. Build the image:
 ```bash
-docker build -t symfony-app . 
-docker run -dit --name my-symfony-app -p 8080:80 -v "$PWD":/var/www/html symfony-app
+docker build -t markflat-app . 
+docker run -dit --name markflat-app -p 8080:80 -v "$PWD":/var/www/html markflat-app
 ```
 #### With github
 
