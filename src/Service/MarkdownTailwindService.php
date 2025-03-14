@@ -111,7 +111,7 @@ class MarkdownTailwindService
         $html = str_replace('<hr>', '<hr class="border-t ' . $theme['container'] . 'p-1 my-6">', $html);
 
         // Images
-        $html = preg_replace_callback('/<img(.*?)src="([^"]*)"([^>]*)>/', function($matches) use ($baseUrl) {
+        $html = preg_replace_callback('/<img(.*?)src="([^"]*)"([^>]*)>/', function ($matches) use ($baseUrl) {
             $src = $matches[2];
             if (preg_match('/^\/[^\/]/', $src) && !preg_match('/^(http|https|www)/', $src)) {
                 $src = $baseUrl . $src;
