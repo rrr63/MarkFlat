@@ -2,21 +2,21 @@
 
 namespace App\Service;
 
-use Parsedown;
-use App\Service\ThemeService;
 use App\Service\MapService;
+use App\Service\ThemeService;
+use League\CommonMark\CommonMarkConverter;
 
 class MarkdownTailwindService
 {
-    private Parsedown $parsedown;
     private ThemeService $themeService;
     private MapService $mapService;
+    private CommonMarkConverter $converter;
 
     public function __construct(
         ThemeService $themeService,
         MapService $mapService
     ) {
-        $this->parsedown = new Parsedown();
+        $this->converter = new CommonMarkConverter();
         $this->themeService = $themeService;
         $this->mapService = $mapService;
     }
@@ -58,7 +58,7 @@ class MarkdownTailwindService
             );
         }
 
-        $html = $this->parsedown->text($content);
+        $html = $this->converter->convert($content);
         $theme = $this->themeService->getCurrentTheme();
 
         $mapScripts = [];
