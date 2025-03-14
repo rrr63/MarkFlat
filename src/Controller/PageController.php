@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use Parsedown;
 use Dotenv\Dotenv;
 use App\Service\PageService;
-use App\Service\ThemeService;
 use App\Service\MarkdownTailwindService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

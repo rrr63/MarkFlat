@@ -2,7 +2,7 @@
 title: 'Mon Premier Article'
 date: '2025-04-10'
 slug: premier-article
-views: 16
+views: 17
 author: rrr63
 description: 'Introduction au système MarkflatCMS'
 tags:
