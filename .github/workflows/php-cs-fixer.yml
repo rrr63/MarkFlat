@@ -1,0 +1,48 @@
+name: PHP-CS-Fixer
+
+on:
+  pull_request:
+    paths:
+      - '**.php'
+      - '.php-cs-fixer.dist.php'
+  push:
+    paths:
+      - '**.php'
+      - '.php-cs-fixer.dist.php'
+
+jobs:
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        tools: php-cs-fixer
+        
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Check coding standards
+      run: |
+        echo "::group::Running PHP-CS-Fixer on src directory"
+        ./vendor/bin/php-cs-fixer fix src --dry-run --diff
+        echo "::endgroup::"
+        
+        echo "::group::Running PHP-CS-Fixer on tests directory"
+        ./vendor/bin/php-cs-fixer fix tests --dry-run --diff
+        echo "::endgroup::"

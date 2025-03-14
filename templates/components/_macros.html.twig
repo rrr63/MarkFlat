@@ -1,0 +1,80 @@
+{# Post metadata (date, views, author) #}
+{% macro post_meta(post) %}
+    <div class="flex flex-wrap gap-4 items-center">
+        <time class="{{ theme('date') }}" datetime="{{ post.date|date('Y-m-d') }}">
+            {{ post.date|date('d M Y') }}
+        </time>
+        
+        <span class="{{ theme('views') }} flex items-center">
+            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+            {{ post.views }}
+        </span>
+
+        {% if post.author %}
+            <span class="{{ theme('date') }}">
+                {{ post.author }}
+            </span>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{# Post tags #}
+{% macro post_tags(tags) %}
+    {% if tags %}
+        <div class="mt-4 flex flex-wrap gap-2">
+            {% for tag in tags %}
+                <a href="{{ path('posts_by_tag', {'tag': tag}) }}" 
+                   class="{{ theme('tag') }} px-3 py-1 rounded-full text-sm">
+                    #{{ tag }}
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{# Pagination #}
+{% macro pagination(pagination, route_name, route_params) %}
+    {% if pagination.lastPage > 1 %}
+        <div class="mt-8 flex justify-center space-x-2">
+            {% for i in 1..pagination.lastPage %}
+                {% set params = route_params|merge({'page': i}) %}
+                <a href="{{ path(route_name, params) }}"
+                   class="{{ theme(i == pagination.currentPage ? 'paginationActive' : 'pagination') }} px-3 py-1 border rounded">
+                    {{ i }}
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{# Post card #}
+{% macro post_card(post) %}
+    <article class="{{ theme('container') }} p-6">
+        <h2 class="{{ theme('title') }} mb-4">
+            <a href="{{ path('post_show', {'slug': post.slug}) }}" class="hover:underline">
+                {{ post.title }}
+            </a>
+        </h2>
+        
+        {{ _self.post_meta(post) }}
+        {{ _self.post_tags(post.tags) }}
+
+        {% if post.description %}
+            <p class="{{ theme('content') }} mt-4">
+                {{ post.description }}
+            </p>
+            <div class="mt-4">
+                <a href="{{ path('post_show', {'slug': post.slug}) }}" 
+                   class="{{ theme('link') }} inline-flex items-center">
+                    {{ 'common.read_more'|trans }}
+                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        {% endif %}
+    </article>
+{% endmacro %}

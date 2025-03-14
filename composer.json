@@ -1,0 +1,55 @@
+{
+    "name": "rrr63/markflat",
+    "description": "A markdown flat file CMS",
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=8.2",
+        "symfony/framework-bundle": "^7.2",
+        "symfony/runtime": "^7.2",
+        "symfony/twig-bundle": "^7.2",
+        "twig/markdown-extra": "^3.20",
+        "twig/extra-bundle": "^3.20",
+        "symfony/yaml": "^7.2",
+        "vlucas/phpdotenv": "^5.6",
+        "erusev/parsedown": "^1.7",
+        "symfony/asset": "^7.2",
+        "symfony/translation": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
+    },
+    "require-dev": {
+        "symfony/stopwatch": "^7.2",
+        "phpunit/phpunit": "^12.0",
+        "symfony/test-pack": "^1.0",
+        "phpstan/phpstan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.72"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "php bin/node.php"
+        ],
+        "post-update-cmd": [
+            "php bin/node.php"
+        ],
+        "test": "phpunit"
+        
+    }
+}

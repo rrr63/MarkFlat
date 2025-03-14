@@ -1,0 +1,20 @@
+/assets/node_modules/
+/vendor/
+/var/
+/composer.lock
+/phpunit.xml
+/.phpunit.result.cache
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+.phpunit.cache/test-results
+node_modules/
+.php-cs-fixer.cache
+/public/lib/
+/public/css/

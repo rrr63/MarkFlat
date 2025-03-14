@@ -1,0 +1,43 @@
+site:
+    name: 'MarkBlog CMS'
+    tagline: 'A simple Markdown-based CMS'
+
+common:
+    views: 'views'
+    read_more: 'Read more'
+    no_description: 'Click ''Read more'' to discover this article.'
+    previous: 'Previous'
+    next: 'Next'
+
+search:
+    title: 'Search'
+    placeholder: 'Search articles...'
+    button: 'Search'
+    results:
+        none: 'No results for "%query%"'
+        found: '{0} No results|{1} %count% result|]1,Inf[ %count% results'
+        for: 'for "%query%"'
+    empty: 'Use the form above to search for articles.'
+
+posts:
+    title: 'Posts'
+    latest: 'Latest posts'
+    no_posts: 'No posts available.'
+    written_by: 'by'
+    published_on: 'Published on'
+    tags: 'Tags'
+
+pages:
+    title: 'Pages'
+    no_pages: 'No pages available.'
+
+nav:
+    main: 'Main navigation'
+    home: 'Home'
+    blog: 'Blog'
+    search: 'Search'
+    search_icon: '🔍'
+
+pagination:
+    nav_label: 'Page navigation'
+    page: 'Page %page%'

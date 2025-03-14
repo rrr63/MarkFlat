@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }} - {{ parent() }}{% endblock %}
+
+{% block header %}{{ post.title }}{% endblock %}
+
+{% block body %}
+    {% include 'posts/_post.html.twig' with {
+        'post': post,
+        'link_title': false,
+        'show_full_content': true
+    } %}
+{% endblock %}

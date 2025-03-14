@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }}{% endblock %}
+
+{% block header %}
+    {{ render(path('home_hero')) }}
+{% endblock %}
+
+{% block body %}
+    <div class="mt-8">
+        <section class="{{ theme('container') }} p-6">
+            <header class="mb-6">
+                <h2 class="{{ theme('title') }}">Articles récents</h2>
+                <p class="{{ theme('date') }} mt-2">Découvrez nos derniers articles</p>
+            </header>
+            
+            {{ render(path('posts_latest', { limit: 3 })) }}
+        </section>
+    </div>
+{% endblock %}

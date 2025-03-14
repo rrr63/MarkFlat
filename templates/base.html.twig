@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('fr') }}" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ render(path('var-render', { var: 'MF_CMS_SITE_NAME' })) }}{% endblock %}</title>
+    <link href="{{asset('css/output.css')}}" rel="stylesheet">
+    <link href="{{asset('lib/leaflet/leaflet.css')}}" rel="stylesheet">
+    <script src="{{asset('lib/leaflet/leaflet.js')}}"></script>
+</head>
+<body class="{{ theme('body') }} min-h-full flex flex-col">
+    {{ render(path('nav' , {
+        current_route: app.request.get('_route'),
+        current_path: app.request.get('path')
+    })) }}
+
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        {% if block('header') is defined %}
+            <header class="{{ theme('header') }} mb-8">
+                <div class="container mx-auto px-4 py-6">
+                    {% block header %}{% endblock %}
+                </div>
+            </header>
+        {% endif %}
+
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer class="{{ theme('footer') }} py-8 mt-auto">
+        <div class="container mx-auto px-4">
+            <p class="{{ theme('date') }} text-center">
+                {{ "now"|date("Y") }} {{ render(path('var-render', { var: 'MF_CMS_SITE_NAME' })) }} - {{ 'site.tagline'|trans }}
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

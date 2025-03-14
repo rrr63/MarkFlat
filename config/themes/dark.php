@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'body' => 'bg-gray-900 text-gray-100',
+    'nav' => 'bg-gray-800 shadow-md',
+    'navLink' => 'text-gray-300 hover:text-white',
+    'header' => 'bg-gray-800 shadow',
+    'headerTitle' => 'text-3xl font-bold text-white',
+    'container' => 'bg-gray-800 shadow-sm rounded-lg',
+    'title' => 'text-2xl font-bold text-white',
+    'content' => 'prose prose-invert max-w-none',
+    'tag' => 'bg-gray-700 text-gray-200 hover:bg-gray-600',
+    'link' => 'text-blue-400 hover:text-blue-300',
+    'date' => 'text-gray-400',
+    'views' => 'text-gray-400',
+    'pagination' => 'bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700',
+    'paginationActive' => 'bg-blue-900 border-blue-500 text-blue-200',
+    'footer' => 'bg-gray-800 shadow',
+    'code' => 'bg-gray-400 border text-gray-700',
+    'pre' => 'bg-gray-400 text-gray-700',
+    'table' => 'bg-white',
+    'thead' => 'bg-gray-400 text-gray-700',
+    'th' => 'bg-gray-400 text-gray-700',
+    'td' => 'bg-gray-400 text-gray-700',
+];

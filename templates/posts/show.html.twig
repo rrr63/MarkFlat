@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }} - {{ parent() }}{% endblock %}
+
+{% block header %}
+    <div class="flex items-center justify-between">
+        <h1 class="{{ theme('headerTitle') }}">{{ post.title }}</h1>
+        <a href="{{ path('posts_index') }}" class="{{ theme('link') }} text-sm">
+            ← Retour aux articles
+        </a>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {% include 'posts/_post.html.twig' with {
+        'post': post,
+        'link_title': false,
+        'show_full_content': true
+    } %}
+{% endblock %}

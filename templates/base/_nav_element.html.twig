@@ -1,0 +1,6 @@
+<a href="{{ route }}" 
+    class="{{ theme(isActive ? 'navLinkActive' : 'navLink') }}"
+    {% if isActive %}aria-current="page"{% endif %}
+    {% if ariaLabel is defined %}aria-label="{{ ariaLabel }}"{% endif %}>
+    {{name}}
+</a>

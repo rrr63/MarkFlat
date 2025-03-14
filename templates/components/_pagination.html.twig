@@ -1,0 +1,36 @@
+{% if lastPage > 1 %}
+<div class="flex justify-center mt-8">
+    <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="{{ 'pagination.nav_label'|trans }}">
+        {% if currentPage > 1 %}
+            <a href="{{ path(app.request.attributes.get('_route'), routeParams|default({})|merge({page: currentPage - 1})) }}" 
+               class="relative inline-flex items-center px-2 py-2 rounded-l-md border {{ theme('pagination') }}"
+               aria-label="{{ 'common.previous'|trans }}">
+                <span class="sr-only">{{ 'common.previous'|trans }}</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        {% endif %}
+
+        {% for i in 1..lastPage %}
+            <a href="{{ path(app.request.attributes.get('_route'), routeParams|default({})|merge({page: i})) }}" 
+               class="relative inline-flex items-center px-4 py-2 border  {% if currentPage == i %}{{ theme('paginationActive') }}{% else %}{{ theme('pagination') }}{% endif %}"
+               aria-label="{{ 'pagination.page'|trans({'%page%': i}) }}"
+               {% if currentPage == i %}aria-current="page"{% endif %}>
+                {{ i }}
+            </a>
+        {% endfor %}
+
+        {% if currentPage < lastPage %}
+            <a href="{{ path(app.request.attributes.get('_route'), routeParams|default({})|merge({page: currentPage + 1})) }}" 
+               class="relative inline-flex items-center px-2 py-2 rounded-r-md border {{ theme('pagination') }}"
+               aria-label="{{ 'common.next'|trans }}">
+                <span class="sr-only">{{ 'common.next'|trans }}</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        {% endif %}
+    </nav>
+</div>
+{% endif %}

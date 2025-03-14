@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% import "components/_macros.html.twig" as components %}
+
+{% block title %}#{{ tag }} - {{ parent() }}{% endblock %}
+
+{% block header %}
+    <div class="flex items-center justify-between">
+        <h1 class="{{ theme('headerTitle') }}">#{{ tag }}</h1>
+        <a href="{{ path('posts_index') }}" class="{{ theme('link') }} text-sm">
+            ← Retour aux articles
+        </a>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="space-y-6">
+        {% for post in posts %}
+            {{ components.post_card(post) }}
+        {% else %}
+            <div class="{{ theme('container') }} p-6">
+                <p class="{{ theme('date') }} text-center">
+                    Aucun article trouvé avec le tag #{{ tag }}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if lastPage > 1 %}
+        {{ components.pagination({
+            'currentPage': currentPage,
+            'lastPage': lastPage
+        }, 'posts_by_tag', {'tag': tag}) }}
+    {% endif %}
+{% endblock %}

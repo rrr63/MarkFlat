@@ -1,0 +1,35 @@
+{% import "components/_macros.html.twig" as components %}
+
+<article class="{{ theme('container') }} p-6 mb-8">
+    <header class="mb-8">
+        <h1 class="{{ theme('title') }} mb-4">
+            {% if link_title|default(false) %}
+                <a href="{{ path('post_show', {'slug': post.slug}) }}" class="hover:underline">
+                    {{ post.title }}
+                </a>
+            {% else %}
+                {{ post.title }}
+            {% endif %}
+        </h1>
+        
+        {{ components.post_meta(post) }}
+        {{ components.post_tags(post.tags) }}
+    </header>
+
+    <div class="{{ theme('content') }} mt-8">
+        {% if show_full_content|default(true) %}
+            {{ post.content | raw}}
+        {% else %}
+            <p>{{ post.description ?? 'Cliquez sur "Lire la suite" pour découvrir cet article.' }}</p>
+            <div class="mt-4">
+                <a href="{{ path('post_show', {'slug': post.slug}) }}" 
+                   class="{{ theme('link') }} inline-flex items-center">
+                    {{ 'common.read_more'|trans }}
+                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</article>

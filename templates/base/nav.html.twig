@@ -1,0 +1,37 @@
+<nav class="{{ theme('nav') }} shadow" aria-label="{{ 'nav.main'|trans }}">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <a href="{{ path('home') }}" class="{{ theme('title') }}">
+                    {{ render(path('var-render', { var: 'MF_CMS_SITE_NAME' })) }}
+                </a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                {% include 'base/_nav_element.html.twig' with {
+                    route: path('home'),
+                    name: 'nav.home'|trans,
+                    isActive: current_route == 'home'
+                } %}
+                {% include 'base/_nav_element.html.twig' with {
+                    route: path('posts_index'),
+                    name: 'posts.title'|trans,
+                    isActive: current_route == 'posts_index'
+                } %}
+                {% for page in pages %}
+                    {% include 'base/_nav_element.html.twig' with {
+                        route: path('page', {path: page.path}),
+                        name: page.title | capitalize,
+                        isActive: current_route == 'page' and current_path == page.path
+                    } %}
+                {% endfor %}
+                {% include 'base/_nav_element.html.twig' with {
+                    route: path('search'),
+                    name: 'nav.search_icon'|trans,
+                    isActive: current_route == 'search',
+                    ariaLabel: 'nav.search'|trans
+                } %}
+            </div>
+        </div>
+    </div>
+</nav>

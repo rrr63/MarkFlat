@@ -1,0 +1,25 @@
+<article class="space-y-2">
+    <div class="flex items-center justify-between">
+        <a href="{{ path('post', {slug: post.slug}) }}" class="text-xl font-semibold text-blue-600 hover:text-blue-800">
+            {{ post.title }}
+        </a>
+        <span class="text-sm text-gray-500">{{ post.views }} vues</span>
+    </div>
+    <div class="flex items-center space-x-4 text-sm text-gray-500">
+        <time datetime="{{ post.date|date('c') }}">
+            {{ post.date|date('d/m/Y', 'Europe/Paris') }}
+        </time>
+        <span>•</span>
+        <span>{{ post.author }}</span>
+    </div>
+    <p class="text-gray-600">{{ post.description }}</p>
+    {% if post.tags|length > 0 %}
+        <div class="flex flex-wrap gap-2">
+            {% for tag in post.tags %}
+                <a href="{{ path('posts_by_tag', {tag: tag}) }}" class="px-2 py-1 text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full transition-colors">
+                    #{{ tag }}
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+</article>
