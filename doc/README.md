@@ -9,5 +9,6 @@ Welcome to the MarkFlat CMS documentation. This documentation will help you unde
 - [Content Management](./content-management.md)
 - [Theming System](./theming.md)
 - [Maps Integration](./maps.md)
+- [Polls](./polls.md)
 - [Configuration](./configuration.md)
 - [Contributing](./contributing.md)

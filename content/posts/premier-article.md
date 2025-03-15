@@ -6,15 +6,21 @@ views: 19
 author: rrr63
 description: 'Introduction au système MarkflatCMS'
 tags:
-    - cms
-    - markdown
-    - symfony
-
+  - cms
+  - markdown
+  - symfony
+polls:
+  favorite-color:
+    votes:
+      - 1
+      - 1
+      - 1
 ---
 # Mon Premier Article
 
 [POLL]
 {
+  "id": "favorite-color",
   "question": "Quelle est votre couleur préférée ?",
   "options": ["Bleu", "Rouge", "Vert"]
 }

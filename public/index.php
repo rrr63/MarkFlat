@@ -3,8 +3,8 @@
 use Dotenv\Dotenv;
 use App\Component\MapComponent;
 use App\Component\PollComponent;
-use App\Component\GalleryComponent;
 use App\Service\ComponentRegistry;
+use App\Controller\PollController;
 use Twig\Extra\Markdown\DefaultMarkdown;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
@@ -41,6 +41,8 @@ class Kernel extends BaseKernel
     {
         $defaultLocale = $_ENV['MF_CMS_DEFAULT_LOCALE'] ?? 'fr';
         $supportedLocales = json_decode($_ENV['MF_CMS_SUPPORTED_LOCALES'] ?? '["fr","en"]', true);
+        $projectDir = $this->getProjectDir();
+
         $container->extension('framework', [
             'secret' => 'S0ME_SECRET',
             'router' => [
@@ -51,6 +53,10 @@ class Kernel extends BaseKernel
                 'default_path' => '%kernel.project_dir%/translations',
                 'fallbacks' => $supportedLocales,
                 'paths' => ['%kernel.project_dir%/translations']
+            ],
+            'session' => [
+                'enabled' => true,
+                'handler_id' => null
             ]
         ]);
 
@@ -76,19 +82,24 @@ class Kernel extends BaseKernel
 
         // Register Markdown Components
         $services->set(MapComponent::class)
-            ->autowire();
+            ->args([new Reference('App\Service\MapService')]);
 
         $services->set(PollComponent::class)
-            ->autowire();
+            ->args([$projectDir]);
 
-        $services->set(GalleryComponent::class)
-            ->autowire();
+        // Register Controllers
+        $services->set(PollController::class)
+            ->args([
+                $projectDir,
+                new Reference('request_stack')
+            ])
+            ->call('setContainer', [new Reference('service_container')])
+            ->tag('controller.service_arguments');
 
         // Configure Component Registry
         $services->set(ComponentRegistry::class)
             ->call('addComponent', [new Reference(MapComponent::class)])
-            ->call('addComponent', [new Reference(PollComponent::class)])
-            ->call('addComponent', [new Reference(GalleryComponent::class)]);
+            ->call('addComponent', [new Reference(PollComponent::class)]);
 
         // Add translation paths to container parameters
         $container->parameters()
