@@ -67,7 +67,6 @@ We love your input! Check out our [Contributing Guide](./doc/contributing.md) to
 ## 💖 Support
 
 - ⭐ Star this repo
-- 🐦 Follow [@MarkFlatCMS](https://twitter.com/MarkFlatCMS) on Twitter
 - 📢 Share with your friends
 
 ## 📄 License
