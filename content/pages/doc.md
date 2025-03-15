@@ -1,3 +1,8 @@
+---
+title: 'Doc'
+menu_order: 2
+show_in_menu: false
+---
 # Doc
 
 A lightweight, Symfony-based CMS that lets you create beautiful blogs and websites using Markdown files. No database required!

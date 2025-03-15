@@ -1,3 +1,8 @@
+---
+title: 'About Us'
+menu_order: 1
+show_in_menu: true
+---
 # Demo
 
 ## Headers
