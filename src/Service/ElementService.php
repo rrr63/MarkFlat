@@ -7,12 +7,15 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class ElementService
 {
     private string $projectDir;
-    private MarkdownTailwindService $markdownTailwindService;
 
-    public function __construct(ParameterBagInterface $params, MarkdownTailwindService $markdownTailwindService)
-    {
-        $this->markdownTailwindService = $markdownTailwindService;
-        $this->projectDir = $params->get('kernel.project_dir');
+    public function __construct(
+        ParameterBagInterface $params,
+        private MarkdownTailwindService $markdownTailwindService
+    ) {
+        $projectDir = $params->get('kernel.project_dir');
+        if (is_scalar($projectDir) || is_null($projectDir)) {
+            $this->projectDir = (string) $projectDir;
+        }
     }
 
     public function getElementContent(string $elementName, string $elementsDirectory): string
@@ -23,6 +26,6 @@ class ElementService
             return "";
         }
 
-        return $this->markdownTailwindService->convert(file_get_contents($filePath));
+        return $this->markdownTailwindService->convert(file_get_contents($filePath) ?: '');
     }
 }

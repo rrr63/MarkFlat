@@ -32,7 +32,7 @@ class VarController extends AbstractController
         $allPages = $pageService->getAllPages($_ENV['MF_CMS_PAGES_DIR']);
 
         $menuPages = array_filter($allPages, function ($page) {
-            return $page['show_in_menu'] ?? false;
+            return $page['show_in_menu'];
         });
 
         return $this->render('base/nav.html.twig', [

@@ -21,8 +21,8 @@ class SearchController extends AbstractController
     #[Route('/posts', name: 'search')]
     public function search(Request $request): Response
     {
-        $search = $request->query->get('search', "");
-        $page = $request->query->getInt('page', 1);
+        $search = (string)$request->query->get('search', "");
+        $page = (int)$request->query->getInt('page', 1);
 
         $paginatedPosts = $this->postService->getPaginatedPostsBySearch($_ENV['MF_CMS_POSTS_DIR'], $search, $page);
 

@@ -58,7 +58,8 @@ class MarkdownTailwindService
             );
         }
 
-        $html = $this->converter->convert($content);
+        $html = (string) $this->converter->convert($content);
+
         $theme = $this->themeService->getCurrentTheme();
 
         $mapScripts = [];
