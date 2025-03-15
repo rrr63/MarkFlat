@@ -32,7 +32,8 @@ class MarkdownTailwindServiceTest extends TestCase
                 'table' => '',
                 'thead' => '',
                 'th' => '',
-                'td' => ''
+                'td' => '',
+                'blockquote' => '',
             ]);
 
         $this->mapService = new MapService();

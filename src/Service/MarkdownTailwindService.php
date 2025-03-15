@@ -94,7 +94,7 @@ class MarkdownTailwindService
         $html = str_replace('<em>', '<em class="italic">', $html);
 
         // Blockquotes using container style
-        $html = str_replace('<blockquote>', '<blockquote class="' . $theme['container'] . ' pl-4 italic mb-4">', $html);
+        $html = str_replace('<blockquote>', '<blockquote class="' . $theme['blockquote'] . ' p-4 my-4 border-s-4 italic ">', $html);
 
         // Code blocks using container style
         $html = str_replace('<code>', '<code class="' . $theme['code'] . ' p-1 rounded">', $html);
