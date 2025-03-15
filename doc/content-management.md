@@ -37,7 +37,7 @@ date: '2025-03-15'
 author: 'Your Name'
 description: 'A brief description for SEO and previews'
 tags: [programming, php]
-image: '/images/post-cover.jpg'  # Optional
+image: '/assets/images/post-cover.jpg'  # Optional
 draft: false  # Optional, defaults to false
 ---
 
@@ -117,7 +117,7 @@ Tags help organize and categorize your content:
 
 Posts and pages automatically generate clean URLs:
 
-- Posts: `/blog/title-of-post`
+- Posts: `/posts/title-of-post`
 - Pages: `/page-name`
 
 ## Advanced Features
@@ -159,7 +159,7 @@ Images can be referenced in two ways:
 
 2. **Local Images**:
 ```markdown
-![Alt text](/images/local-image.jpg)
+![Alt text](/assets/images/local-image.jpg)
 ```
 
 Place local images in the `public/images/` directory.
