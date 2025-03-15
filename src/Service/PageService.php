@@ -18,7 +18,7 @@ class PageService
     }
 
     /**
-     * @return array<int, array{path: string, title: string}>
+     * @return array<int, array{path: string, title: string, menu_order: int, show_in_menu: bool}>
      */
     public function getAllPages(string $pagesDirectory): array
     {
@@ -31,18 +31,26 @@ class PageService
         $files = scandir($pagesDirectory);
         foreach ($files as $file) {
             if (str_ends_with($file, '.md')) {
+                $metadata = $this->getPageMetadata($pagesDirectory . '/' . $file);
                 $pages[] = [
                     'path' => basename($file, '.md'),
-                    'title' => $this->getPageTitle($pagesDirectory . '/' . $file)
+                    'title' => $metadata['title'] ?? basename($file, '.md'),
+                    'menu_order' => $metadata['menu_order'] ?? 999,
+                    'show_in_menu' => $metadata['show_in_menu'] ?? false
                 ];
             }
         }
+
+        // Sort pages by menu_order
+        usort($pages, function ($a, $b) {
+            return $a['menu_order'] <=> $b['menu_order'];
+        });
 
         return $pages;
     }
 
     /**
-     * @return array{content: string, title: string, path: string}|null
+     * @return array{content: string, title: string, path: string, menu_order: int, show_in_menu: bool}|null
      */
     public function getPage(string $pagesDirectory, string $path): ?array
     {
@@ -52,25 +60,46 @@ class PageService
             return null;
         }
 
+        $content = file_get_contents($filePath);
+        if ($content === false) {
+            return null;
+        }
+
+        $metadata = $this->getPageMetadata($filePath);
+        $parsedContent = $this->parsePageContent($content);
+
         return [
-            'content' => file_get_contents($filePath),
-            'title' => $this->getPageTitle($filePath),
-            'path' => $path
+            'content' => $parsedContent,
+            'title' => $metadata['title'] ?? basename($filePath, '.md'),
+            'path' => $path,
+            'menu_order' => $metadata['menu_order'] ?? 999,
+            'show_in_menu' => $metadata['show_in_menu'] ?? false
         ];
     }
 
-    private function getPageTitle(string $filePath): string
+    /**
+     * @return array<string, mixed>
+     */
+    private function getPageMetadata(string $filePath): array
     {
         $content = file_get_contents($filePath);
+        if ($content === false) {
+            return [];
+        }
+
         if (preg_match('/^---\n(.*?)\n---\n(.*)/s', $content, $matches)) {
-            $metadata = Yaml::parse($matches[1]);
-            return $metadata['title'] ?? basename($filePath, '.md');
+            return Yaml::parse($matches[1]) ?? [];
         }
 
-        if (preg_match('/^#\s+(.+)$/m', $content, $matches)) {
-            return $matches[1];
+        return [];
+    }
+
+    private function parsePageContent(string $content): string
+    {
+        if (preg_match('/^---\n.*?\n---\n(.*)/s', $content, $matches)) {
+            return trim($matches[1]);
         }
 
-        return basename($filePath, '.md');
+        return trim($content);
     }
 }

@@ -21,7 +21,7 @@
                 {% for page in pages %}
                     {% include 'base/_nav_element.html.twig' with {
                         route: path('page', {path: page.path}),
-                        name: page.title | capitalize,
+                        name: page.title,
                         isActive: current_route == 'page' and current_path == page.path
                     } %}
                 {% endfor %}
