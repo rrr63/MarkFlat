@@ -2,23 +2,23 @@
 
 namespace App\Service;
 
-use App\Service\MapService;
-use App\Service\ThemeService;
 use League\CommonMark\CommonMarkConverter;
+use App\Service\ThemeService;
+use App\Service\ComponentRegistry;
 
 class MarkdownTailwindService
 {
     private ThemeService $themeService;
-    private MapService $mapService;
+    private ComponentRegistry $componentRegistry;
     private CommonMarkConverter $converter;
 
     public function __construct(
         ThemeService $themeService,
-        MapService $mapService
+        ComponentRegistry $componentRegistry
     ) {
         $this->converter = new CommonMarkConverter();
         $this->themeService = $themeService;
-        $this->mapService = $mapService;
+        $this->componentRegistry = $componentRegistry;
     }
 
     private function getBaseUrl(): string
@@ -32,6 +32,9 @@ class MarkdownTailwindService
     public function convert(string $content): string
     {
         $baseUrl = $this->getBaseUrl();
+        $theme = $this->themeService->getCurrentTheme();
+
+        // Process code blocks first to prevent component syntax inside code blocks from being processed
         $codeBlocks = [];
         $content = preg_replace_callback('/```.*?\n(.*?)```/s', function ($matches) use (&$codeBlocks) {
             $placeholder = '<!-- CODE_BLOCK_' . count($codeBlocks) . ' -->';
@@ -39,17 +42,19 @@ class MarkdownTailwindService
             return $placeholder;
         }, $content);
 
-        $mapConfigs = [];
-        $content = preg_replace_callback('/\[MAP\]\s*\n(.*?)\n\[\/MAP\]/s', function ($matches) use (&$mapConfigs) {
-            $config = json_decode(trim($matches[1]), true);
-            if (!$config) {
-                return '<div class="text-red-500">Error: Invalid map configuration</div>';
-            }
+        // Process components
+        $componentScripts = [];
+        foreach ($this->componentRegistry->getComponents() as $component) {
+            $content = preg_replace_callback($component->getPattern(), function ($matches) use ($component, $theme, &$componentScripts) {
+                $result = $component->process($matches[1], $theme);
+                if ($result['js']) {
+                    $componentScripts[] = $result['js'];
+                }
+                return $result['html'];
+            }, $content);
+        }
 
-            $mapConfigs[] = $config;
-            return "<!-- MAP_PLACEHOLDER_" . (count($mapConfigs) - 1) . " -->";
-        }, $content);
-
+        // Restore code blocks
         foreach ($codeBlocks as $index => $code) {
             $content = str_replace(
                 "<!-- CODE_BLOCK_{$index} -->",
@@ -60,19 +65,21 @@ class MarkdownTailwindService
 
         $html = (string) $this->converter->convert($content);
 
-        $theme = $this->themeService->getCurrentTheme();
+        // Apply Tailwind classes
+        $html = $this->applyTailwindClasses($html, $theme, $baseUrl);
 
-        $mapScripts = [];
-        foreach ($mapConfigs as $index => $config) {
-            $map = $this->mapService->getMapConfig($config);
-            $mapScripts[] = $map['js'];
-            $html = str_replace(
-                "<!-- MAP_PLACEHOLDER_" . $index . " -->",
-                $map['html'],
-                $html
-            );
+        // Append component scripts if any
+        if (!empty($componentScripts)) {
+            $html .= "\n<script>document.addEventListener('DOMContentLoaded', function() {\n";
+            $html .= implode("\n", $componentScripts);
+            $html .= "\n});</script>";
         }
 
+        return $html;
+    }
+
+    private function applyTailwindClasses(string $html, array $theme, string $baseUrl): string
+    {
         // Headers using content styles
         $html = str_replace('<h1>', '<h1 class="' . $theme['content'] . ' text-3xl font-bold mb-4">', $html);
         $html = str_replace('<h2>', '<h2 class="' . $theme['content'] . ' text-2xl font-semibold mb-3">', $html);
@@ -102,10 +109,9 @@ class MarkdownTailwindService
         $html = str_replace('<pre>', '<pre class="' . $theme['pre'] . ' rounded overflow-auto">', $html);
 
         $html = preg_replace_callback('/<pre[^>]*>(.*?)<\/pre>/s', function ($match) use ($theme) {
-            // Apply specific styles to <code> inside <pre>
             $content = $match[1];
             $content = preg_replace('/<code([^>]*)>/', '<code class="' . $theme['code'] . ' p-2 rounded block w-full"$1>', $content);
-            return '<pre class="' . $theme['pre'] . ' rounded shadow overflow-auto  mt-2 mb-2">' . $content . '</pre>';
+            return '<pre class="' . $theme['pre'] . ' rounded shadow overflow-auto mt-2 mb-2">' . $content . '</pre>';
         }, $html);
 
         // Horizontal rule
@@ -125,13 +131,6 @@ class MarkdownTailwindService
         $html = str_replace('<thead>', '<thead class="' . $theme['thead'] . ' ">', $html);
         $html = str_replace('<th>', '<th class="py-2 px-4 ' . $theme['th'] . ' border-l-1 first:border-l-0">', $html);
         $html = str_replace('<td>', '<td class="py-2 px-4 ' . $theme['td'] . ' border-t-1 border-l-1 first:border-l-0">', $html);
-
-        // Append map scripts if any
-        if (!empty($mapScripts)) {
-            $html .= "\n<script>document.addEventListener('DOMContentLoaded', function() {\n";
-            $html .= implode("\n", $mapScripts);
-            $html .= "\n});</script>";
-        }
 
         return $html;
     }

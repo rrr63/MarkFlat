@@ -22,5 +22,5 @@ return [
     'thead' => 'bg-gray-400 text-gray-700',
     'th' => 'bg-gray-400 text-gray-700',
     'td' => 'bg-gray-400 text-gray-700',
-    'blockquote' => 'border-gray-500 bg-gray-700',
+    'blockquote' => 'border-white bg-gray-700',
 ];

@@ -1,6 +1,10 @@
 <?php
 
 use Dotenv\Dotenv;
+use App\Component\MapComponent;
+use App\Component\PollComponent;
+use App\Component\GalleryComponent;
+use App\Service\ComponentRegistry;
 use Twig\Extra\Markdown\DefaultMarkdown;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
@@ -10,6 +14,7 @@ use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Reference;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
@@ -68,6 +73,22 @@ class Kernel extends BaseKernel
             ->exclude('../src/DependencyInjection/')
             ->exclude('../src/Entity/')
             ->exclude('../src/Kernel.php');
+
+        // Register Markdown Components
+        $services->set(MapComponent::class)
+            ->autowire();
+
+        $services->set(PollComponent::class)
+            ->autowire();
+
+        $services->set(GalleryComponent::class)
+            ->autowire();
+
+        // Configure Component Registry
+        $services->set(ComponentRegistry::class)
+            ->call('addComponent', [new Reference(MapComponent::class)])
+            ->call('addComponent', [new Reference(PollComponent::class)])
+            ->call('addComponent', [new Reference(GalleryComponent::class)]);
 
         // Add translation paths to container parameters
         $container->parameters()
