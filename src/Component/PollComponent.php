@@ -4,6 +4,8 @@ namespace App\Component;
 
 class PollComponent implements MarkdownComponentInterface
 {
+    private static bool $jsIncluded = false;
+
     public function getPattern(): string
     {
         return '/\[POLL\]\s*\n(.*?)\n\[\/POLL\]/s';
@@ -48,7 +50,7 @@ class PollComponent implements MarkdownComponentInterface
 
         $html .= sprintf(
             '</div>
-                <button class="%s px-4 py-2 mt-4 rounded" onclick="submitPoll(\'%s\')">Vote</button>
+                <button class="%s px-4 py-2 mt-4 rounded" onclick="MarkFlatPoll.submit(\'%s\')">Vote</button>
                 <div id="%s-results" class="mt-4 hidden"></div>
             </div>',
             $theme['button'] ?? 'bg-blue-500 text-white hover:bg-blue-600',
@@ -56,22 +58,31 @@ class PollComponent implements MarkdownComponentInterface
             $pollId
         );
 
-        $js = <<<JS
-            function submitPoll(pollId) {
-                const selected = document.querySelector(`input[name="\${pollId}"]:checked`);
-                if (!selected) return;
-                
-                const resultsDiv = document.getElementById(`\${pollId}-results`);
-                resultsDiv.innerHTML = 'Thanks for voting!';
-                resultsDiv.classList.remove('hidden');
-                
-                // Here you would typically send the vote to your backend
-                console.log('Vote submitted:', {
-                    pollId: pollId,
-                    option: selected.value
-                });
-            }
-        JS;
+        // Only include the JavaScript code once per page
+        $js = '';
+        if (!self::$jsIncluded) {
+            $js = <<<JS
+                if (typeof MarkFlatPoll === 'undefined') {
+                    window.MarkFlatPoll = {
+                        submit: function(pollId) {
+                            const selected = document.querySelector(`input[name="\${pollId}"]:checked`);
+                            if (!selected) return;
+                            
+                            const resultsDiv = document.getElementById(`\${pollId}-results`);
+                            resultsDiv.innerHTML = 'Thanks for voting!';
+                            resultsDiv.classList.remove('hidden');
+                            
+                            // Here you would typically send the vote to your backend
+                            console.log('Vote submitted:', {
+                                pollId: pollId,
+                                option: selected.value
+                            });
+                        }
+                    };
+                }
+            JS;
+            self::$jsIncluded = true;
+        }
 
         return [
             'html' => $html,
