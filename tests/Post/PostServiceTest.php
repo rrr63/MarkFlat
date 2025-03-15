@@ -65,7 +65,7 @@ class PostServiceTest extends TestCase
         // Arrange
         $slug = 'test-post';
         // Sauvegarder le contenu original
-        $this->originalContent = file_get_contents($this->testPostPath);
+        $this->originalContent = file_get_contents($this->testPostPath) ?: '';
         $initialPost = $this->postService->getPost($this->testPostsDir, $slug);
         $initialViews = $initialPost->getViews();
 

@@ -42,16 +42,21 @@ class ConfigService
 
     public function getProjectDir(): string
     {
-        return $this->params->get('kernel.project_dir');
+        $projectDir = $this->params->get('kernel.project_dir');
+
+        if (is_scalar($projectDir) || is_null($projectDir)) {
+            return (string) $projectDir;
+        }
+        throw new \UnexpectedValueException('Project directory is not a valid type.');
     }
 
     public function getPostsDir(): string
     {
-        return $this->getProjectDir() . $this->get('posts_dir');
+        return (string)($this->getProjectDir() . $this->get('posts_dir'));
     }
 
     public function getPagesDir(): string
     {
-        return $this->getProjectDir() . $this->get('pages_dir');
+        return (string)($this->getProjectDir() . $this->get('pages_dir'));
     }
 }
