@@ -180,35 +180,6 @@ Add interactive states:
    - Group related styles together
    - Use meaningful component names
 
-## Advanced Theming
-
-### Custom Colors
-
-Define custom colors in `tailwind.config.js`:
-
-```javascript
-module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        'brand': {
-          50: '#f0f9ff',
-          // ... other shades
-          900: '#0c4a6e',
-        },
-      },
-    },
-  },
-}
-```
-
-### Custom Components
-
-Create reusable component classes in your theme:
-
-```php
-'customCard' => 'rounded-xl shadow-lg bg-white dark:bg-gray-800 p-6'
-```
 
 ## Next Steps
 
