@@ -37,7 +37,7 @@ cp .env.example .env.local
 
 5. Run tests to ensure everything is working:
 ```bash
-php bin/phpunit
+composer test
 ```
 
 ## Development Workflow
@@ -45,7 +45,6 @@ php bin/phpunit
 ### Branches
 
 - `main`: Production-ready code
-- `develop`: Development branch
 - Feature branches: `feature/your-feature-name`
 - Bug fix branches: `fix/issue-description`
 
@@ -55,10 +54,10 @@ MarkFlat follows PSR standards and uses PHP-CS-Fixer for code style enforcement:
 
 ```bash
 # Run PHP-CS-Fixer
-composer cs-fix
+php bin/beforePR.php
 
 # Check coding standards
-composer cs-check
+vendor/bin/phpstan analyse -l 6 tests src
 ```
 
 ### Testing
@@ -67,13 +66,7 @@ We use PHPUnit for testing. All new features should include tests:
 
 ```bash
 # Run all tests
-php bin/phpunit
-
-# Run specific test suite
-php bin/phpunit --testsuite=Unit
-
-# Run with coverage report
-php bin/phpunit --coverage-html coverage
+vendor/bin/phpunit
 ```
 
 ### Documentation
@@ -86,10 +79,10 @@ php bin/phpunit --coverage-html coverage
 
 ### Pull Request Process
 
-1. Create a new branch from `develop`:
+1. Create a new branch from `main`:
 ```bash
-git checkout develop
-git pull origin develop
+git checkout main
+git pull origin main
 git checkout -b feature/your-feature
 ```
 
@@ -145,9 +138,8 @@ MarkFlat follows a clean architecture approach:
 src/
 ├── Controller/     # HTTP request handlers
 ├── Service/        # Business logic
-├── Entity/         # Domain models
-├── Repository/     # Data access
-└── Utils/          # Helper classes
+├── Post/          # Theme configuration
+├── Twig/          # Theme configuration
 ```
 
 ### Best Practices
@@ -203,18 +195,12 @@ When creating new themes:
 
 1. Follow the theme structure
 2. Use TailwindCSS classes
-3. Support dark mode
-4. Ensure responsive design
-5. Test across browsers
+3. Ensure responsive design
+4. Test across browsers
 
 ### Plugin Development
 
-For extending functionality:
-
-1. Use event listeners
-2. Follow service pattern
-3. Maintain backward compatibility
-4. Document configuration options
+Coming soon
 
 ## Release Process
 
