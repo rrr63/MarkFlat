@@ -16,7 +16,7 @@
 
     <main class="container mx-auto px-4 py-8 flex-grow">
         {% if block('header') is defined %}
-            <header class="{{ theme('header') }} mb-8">
+            <header class="{{ theme('header') }} mb-8 rounded-lg">
                 <div class="container mx-auto px-4 py-6">
                     {% block header %}{% endblock %}
                 </div>

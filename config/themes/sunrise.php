@@ -30,4 +30,5 @@
     'thead' => 'bg-orange-200 text-gray-700',
     'th' => 'bg-orange-200 text-gray-700',
     'td' => 'bg-orange-200 text-gray-700',
+    'blockquote' => 'border-orange-500 bg-orange-200',
 ];

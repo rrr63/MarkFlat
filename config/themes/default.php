@@ -21,4 +21,5 @@ return [
     'thead' => 'bg-gray-100 text-gray-700',
     'th' => 'bg-gray-100 text-gray-700',
     'td' => 'bg-gray-100 text-gray-700',
+    'blockquote' => 'bg-gray-100 text-gray-700',
 ];
