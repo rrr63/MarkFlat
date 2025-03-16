@@ -7,17 +7,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class PollController
+class PollController extends AbstractController
 {
     private string $contentDir;
-    private SessionInterface $session;
+    private RequestStack $requestStack;
 
-    public function __construct(string $projectDir, SessionInterface $session)
+    public function __construct(string $projectDir, RequestStack $requestStack)
     {
         $this->contentDir = $projectDir . '/content';
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/api/poll/vote', name: 'poll_vote', methods: ['POST'])]
@@ -29,7 +30,8 @@ class PollController
         }
 
         // Check if user has already voted
-        $votedPolls = $this->session->get('voted_polls', []);
+        $session = $this->requestStack->getSession();
+        $votedPolls = $session->get('voted_polls', []);
         if (in_array($data['pollId'], $votedPolls)) {
             return new JsonResponse(['error' => 'Already voted'], Response::HTTP_BAD_REQUEST);
         }
@@ -83,7 +85,7 @@ class PollController
             
             // Mark poll as voted in session
             $votedPolls[] = $data['pollId'];
-            $this->session->set('voted_polls', $votedPolls);
+            $session->set('voted_polls', $votedPolls);
         } else {
             return new JsonResponse(['error' => 'Invalid option index'], Response::HTTP_BAD_REQUEST);
         }
@@ -123,7 +125,8 @@ class PollController
         }
 
         // Check if user has already voted
-        $votedPolls = $this->session->get('voted_polls', []);
+        $session = $this->requestStack->getSession();
+        $votedPolls = $session->get('voted_polls', []);
         $hasVoted = in_array($pollId, $votedPolls);
 
         return new JsonResponse([

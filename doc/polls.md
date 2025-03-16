@@ -9,18 +9,27 @@ Pour ajouter un sondage, utilisez la syntaxe suivante :
 ```markdown
 [POLL]
 {
-  "id": "mon-sondage",
   "question": "Votre question ?",
   "options": ["Option 1", "Option 2", "Option 3"]
 }
 [/POLL]
 ```
 
-### Paramètres requis
+### Paramètres
 
-- `id` : Un identifiant unique pour le sondage (utilisez uniquement des lettres, chiffres et tirets)
+#### Requis
 - `question` : La question à poser
 - `options` : Un tableau des options de réponse possibles
+
+#### Optionnel
+- `id` : Un identifiant unique pour le sondage. Si non fourni, un ID sera généré automatiquement à partir de la question ou avec un timestamp unique.
+
+### Génération automatique des IDs
+
+Si l'ID n'est pas spécifié, le système en génère un automatiquement selon les règles suivantes :
+1. Utilise la question comme base (convertie en minuscules, espaces remplacés par des tirets)
+2. Si l'ID est déjà utilisé, ajoute un suffixe numérique
+3. En dernier recours, génère un ID basé sur un timestamp et un nombre aléatoire
 
 ## Stockage des votes
 
@@ -30,7 +39,7 @@ Les votes sont automatiquement stockés dans le frontmatter du fichier Markdown 
 ---
 title: Mon Article
 polls:
-  mon-sondage:
+  quelle-est-votre-couleur-preferee:
     votes: [5, 2, 3]
 ---
 ```
@@ -78,7 +87,6 @@ polls:
 
 [POLL]
 {
-  "id": "couleur-preferee",
   "question": "Quelle est votre couleur préférée ?",
   "options": ["Bleu", "Rouge", "Vert"]
 }

@@ -10,23 +10,51 @@ tags:
   - markdown
   - symfony
 polls:
-  favorite-color:
+  quelle-est-votre-couleur-pr-f--1:
     votes:
+      - 0
       - 1
-      - 1
-      - 1
+      - 0
 ---
 # Mon Premier Article
 
 [POLL]
 {
-  "id": "favorite-color",
-  "question": "Quelle est votre couleur préférée ?",
-  "options": ["Bleu", "Rouge", "Vert"]
+    "question": "Quelle est votre couleur pr\u00e9f\u00e9r\u00e9e ?",
+    "options": [
+        "Bleu",
+        "Rouge",
+        "Vert"
+    ],
+    "id": "quelle-est-votre-couleur-pr-f-"
+}
+[/POLL]
+[POLL]
+{
+    "question": "Quelle est votre couleur pr\u00e9f\u00e9r\u00e9e ?",
+    "options": [
+        "Bleu",
+        "Rouge",
+        "Vert"
+    ],
+    "id": "quelle-est-votre-couleur-pr-f-"
 }
 [/POLL]
 
 Ceci est mon premier article sur MarkflatCMS. Le système est conçu pour être simple et efficace, basé uniquement sur des fichiers Markdown.
+
+[POLL]
+{
+    "question": "Quel framework PHP pr\u00e9f\u00e9rez-vous ?",
+    "options": [
+        "Symfony",
+        "Laravel",
+        "Slim",
+        "CodeIgniter"
+    ],
+    "id": "quel-framework-php-pr-f-rez-vo"
+}
+[/POLL]
 
 ## Fonctionnalités
 
@@ -34,6 +62,8 @@ Ceci est mon premier article sur MarkflatCMS. Le système est conçu pour être 
 - Support des pages statiques
 - Section blog avec articles
 - Interface moderne avec Tailwind CSS
+- Sondages interactifs
+- Cartes interactives
 
 ## Paris, ville lumière
 
