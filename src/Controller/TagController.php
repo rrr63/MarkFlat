@@ -31,7 +31,7 @@ class TagController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $paginatedPosts = $this->postService->getPostsByTag($this->postsDir, $tag, $page);
 
-        return $this->render('posts/index.html.twig', [
+        return $this->render('tag/show.html.twig', [
             'posts' => $paginatedPosts['posts'],
             'currentPage' => $paginatedPosts['currentPage'],
             'lastPage' => $paginatedPosts['lastPage'],

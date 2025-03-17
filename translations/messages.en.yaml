@@ -8,6 +8,7 @@ common:
     no_description: 'Click ''Read more'' to discover this article.'
     previous: 'Previous'
     next: 'Next'
+    back_to_posts: 'Back to posts'
 
 search:
     title: 'Search'

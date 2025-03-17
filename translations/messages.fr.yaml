@@ -8,6 +8,7 @@ common:
     no_description: 'Cliquez sur ''Lire la suite'' pour découvrir cet article.'
     previous: 'Précédent'
     next: 'Suivant'
+    back_to_posts: 'Retour aux articles'
 
 search:
     title: 'Recherche'

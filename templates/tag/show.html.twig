@@ -7,7 +7,7 @@
     <div class="flex items-center justify-between">
         <h1 class="{{ theme('headerTitle') }}">#{{ tag }}</h1>
         <a href="{{ path('posts_index') }}" class="{{ theme('link') }} text-sm">
-            ← Retour aux articles
+            ← {{ 'common.back_to_posts'|trans }}
         </a>
     </div>
 {% endblock %}
