@@ -2,9 +2,7 @@
 
 use Dotenv\Dotenv;
 use App\Component\MapComponent;
-use App\Component\PollComponent;
 use App\Service\ComponentRegistry;
-use App\Controller\PollController;
 use Twig\Extra\Markdown\DefaultMarkdown;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
@@ -84,22 +82,9 @@ class Kernel extends BaseKernel
         $services->set(MapComponent::class)
             ->args([new Reference('App\Service\MapService')]);
 
-        $services->set(PollComponent::class)
-            ->args([$projectDir]);
-
-        // Register Controllers
-        $services->set(PollController::class)
-            ->args([
-                $projectDir,
-                new Reference('request_stack')
-            ])
-            ->call('setContainer', [new Reference('service_container')])
-            ->tag('controller.service_arguments');
-
         // Configure Component Registry
         $services->set(ComponentRegistry::class)
-            ->call('addComponent', [new Reference(MapComponent::class)])
-            ->call('addComponent', [new Reference(PollComponent::class)]);
+            ->call('addComponent', [new Reference(MapComponent::class)]);
 
         // Add translation paths to container parameters
         $container->parameters()
