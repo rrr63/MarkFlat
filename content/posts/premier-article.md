@@ -2,7 +2,7 @@
 title: 'Mon Premier Article'
 date: '2025-04-10'
 slug: premier-article
-views: 17
+views: 20
 author: rrr63
 description: 'Introduction au système MarkflatCMS'
 tags:
@@ -13,7 +13,6 @@ tags:
 ---
 # Mon Premier Article
 
-Ceci est mon premier article sur MarkflatCMS. Le système est conçu pour être simple et efficace, basé uniquement sur des fichiers Markdown.
 
 ## Fonctionnalités
 
@@ -21,6 +20,8 @@ Ceci est mon premier article sur MarkflatCMS. Le système est conçu pour être 
 - Support des pages statiques
 - Section blog avec articles
 - Interface moderne avec Tailwind CSS
+- Sondages interactifs
+- Cartes interactives
 
 ## Paris, ville lumière
 

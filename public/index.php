@@ -1,6 +1,8 @@
 <?php
 
 use Dotenv\Dotenv;
+use App\Component\MapComponent;
+use App\Service\ComponentRegistry;
 use Twig\Extra\Markdown\DefaultMarkdown;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
@@ -10,6 +12,7 @@ use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Reference;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
@@ -36,6 +39,8 @@ class Kernel extends BaseKernel
     {
         $defaultLocale = $_ENV['MF_CMS_DEFAULT_LOCALE'] ?? 'fr';
         $supportedLocales = json_decode($_ENV['MF_CMS_SUPPORTED_LOCALES'] ?? '["fr","en"]', true);
+        $projectDir = $this->getProjectDir();
+
         $container->extension('framework', [
             'secret' => 'S0ME_SECRET',
             'router' => [
@@ -46,6 +51,10 @@ class Kernel extends BaseKernel
                 'default_path' => '%kernel.project_dir%/translations',
                 'fallbacks' => $supportedLocales,
                 'paths' => ['%kernel.project_dir%/translations']
+            ],
+            'session' => [
+                'enabled' => true,
+                'handler_id' => null
             ]
         ]);
 
@@ -68,6 +77,14 @@ class Kernel extends BaseKernel
             ->exclude('../src/DependencyInjection/')
             ->exclude('../src/Entity/')
             ->exclude('../src/Kernel.php');
+
+        // Register Markdown Components
+        $services->set(MapComponent::class)
+            ->args([new Reference('App\Service\MapService')]);
+
+        // Configure Component Registry
+        $services->set(ComponentRegistry::class)
+            ->call('addComponent', [new Reference(MapComponent::class)]);
 
         // Add translation paths to container parameters
         $container->parameters()
