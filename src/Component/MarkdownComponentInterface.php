@@ -11,6 +11,8 @@ interface MarkdownComponentInterface
 
     /**
      * Process the matched content and return HTML + JS
+     * @param string $content The matched content to process
+     * @param array<string, string> $theme The theme configuration
      * @return array{html: string, js: string}
      */
     public function process(string $content, array $theme): array;

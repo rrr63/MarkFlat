@@ -18,6 +18,10 @@ class MapComponent implements MarkdownComponentInterface
         return '/\[MAP\]\s*\n(.*?)\n\[\/MAP\]/s';
     }
 
+    /**
+     * @param string $content
+     * @param array<string, string> $theme
+     */
     public function process(string $content, array $theme): array
     {
         $config = json_decode(trim($content), true);

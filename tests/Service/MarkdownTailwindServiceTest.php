@@ -42,10 +42,10 @@ class MarkdownTailwindServiceTest extends TestCase
 
         $this->mapService = new MapService();
         $this->mapComponent = new MapComponent($this->mapService);
-        
+
         $this->componentRegistry = new ComponentRegistry();
         $this->componentRegistry->addComponent($this->mapComponent);
-        
+
         $this->service = new MarkdownTailwindService($this->themeService, $this->componentRegistry);
     }
 

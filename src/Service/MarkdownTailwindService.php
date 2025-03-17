@@ -94,6 +94,12 @@ class MarkdownTailwindService
         }, $content);
     }
 
+    /**
+     * Process markdown components in content
+     * @param string $content The content to process
+     * @param array<string, string> $theme The theme configuration
+     * @return array{0: string, 1: string[]} Array containing processed content and scripts
+     */
     private function processComponents(string $content, array $theme): array
     {
         $scripts = [];
@@ -109,6 +115,10 @@ class MarkdownTailwindService
         return [$content, $scripts];
     }
 
+    /**
+     * Wrap component scripts in a DOMContentLoaded event listener
+     * @param string[] $scripts Array of JavaScript code strings
+     */
     private function wrapScripts(array $scripts): string
     {
         return sprintf(
@@ -117,6 +127,12 @@ class MarkdownTailwindService
         );
     }
 
+    /**
+     * Apply Tailwind classes to HTML elements
+     * @param string $html The HTML content
+     * @param array<string, string> $theme The theme configuration
+     * @param string $baseUrl The base URL for asset paths
+     */
     private function applyTailwindClasses(string $html, array $theme, string $baseUrl): string
     {
         // Apply heading styles
@@ -162,6 +178,11 @@ class MarkdownTailwindService
         return $html;
     }
 
+    /**
+     * Apply code block styles
+     * @param string $html The HTML content
+     * @param array<string, string> $theme The theme configuration
+     */
     private function applyCodeStyles(string $html, array $theme): string
     {
         // Apply inline code styles
@@ -193,6 +214,11 @@ class MarkdownTailwindService
         );
     }
 
+    /**
+     * Apply table styles
+     * @param string $html The HTML content
+     * @param array<string, string> $theme The theme configuration
+     */
     private function applyTableStyles(string $html, array $theme): string
     {
         $html = str_replace(
