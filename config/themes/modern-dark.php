@@ -29,4 +29,6 @@ return [
     'th' => 'bg-gray-800/50',
     'td' => 'bg-gray-800/50',
     'blockquote' => 'bg-gray-800/50 text-teal-400 hover:bg-gray-800 border border-teal-900/50 transition-colors',
+    'input' => 'bg-gray-800/50 text-teal-400 hover:bg-gray-800 border border-teal-900/50 transition-colors',
+    'button' => 'bg-gray-800/50 text-teal-400 hover:bg-gray-800 border border-teal-900/50 transition-colors'
 ];
