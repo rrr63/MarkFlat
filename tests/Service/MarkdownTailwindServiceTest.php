@@ -2,12 +2,14 @@
 
 namespace App\Tests\Service;
 
-use App\Component\MapComponent;
 use App\Service\MapService;
 use App\Service\ThemeService;
+use App\Service\ButtonService;
+use App\Component\MapComponent;
+use PHPUnit\Framework\TestCase;
+use App\Component\ButtonComponent;
 use App\Service\ComponentRegistry;
 use App\Service\MarkdownTailwindService;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class MarkdownTailwindServiceTest extends TestCase
@@ -17,6 +19,9 @@ class MarkdownTailwindServiceTest extends TestCase
     private ComponentRegistry $componentRegistry;
     private MapService $mapService;
     private MapComponent $mapComponent;
+    private ButtonService $buttonService;
+    private ButtonComponent $buttonComponent;
+    
 
     protected function setUp(): void
     {
@@ -43,8 +48,12 @@ class MarkdownTailwindServiceTest extends TestCase
         $this->mapService = new MapService();
         $this->mapComponent = new MapComponent($this->mapService);
 
+        $this->buttonService = new ButtonService();
+        $this->buttonComponent = new ButtonComponent($this->buttonService);
+
         $this->componentRegistry = new ComponentRegistry();
         $this->componentRegistry->addComponent($this->mapComponent);
+        $this->componentRegistry->addComponent($this->buttonComponent);
 
         $this->service = new MarkdownTailwindService($this->themeService, $this->componentRegistry);
     }
