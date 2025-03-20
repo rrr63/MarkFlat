@@ -3,10 +3,12 @@
 namespace App\Tests\Service;
 
 use App\Service\MapService;
+use App\Service\CodeService;
 use App\Service\ThemeService;
 use App\Service\ButtonService;
 use App\Component\MapComponent;
 use PHPUnit\Framework\TestCase;
+use App\Component\CodeComponent;
 use App\Component\ButtonComponent;
 use App\Service\ComponentRegistry;
 use App\Service\MarkdownTailwindService;
@@ -21,6 +23,8 @@ class MarkdownTailwindServiceTest extends TestCase
     private MapComponent $mapComponent;
     private ButtonService $buttonService;
     private ButtonComponent $buttonComponent;
+    private CodeService $codeService;
+    private CodeComponent $codeComponent;
     
 
     protected function setUp(): void
@@ -51,9 +55,13 @@ class MarkdownTailwindServiceTest extends TestCase
         $this->buttonService = new ButtonService();
         $this->buttonComponent = new ButtonComponent($this->buttonService);
 
+        $this->codeService = new CodeService();
+        $this->codeComponent = new CodeComponent($this->codeService);
+
         $this->componentRegistry = new ComponentRegistry();
         $this->componentRegistry->addComponent($this->mapComponent);
         $this->componentRegistry->addComponent($this->buttonComponent);
+        $this->componentRegistry->addComponent($this->codeComponent);
 
         $this->service = new MarkdownTailwindService($this->themeService, $this->componentRegistry);
     }

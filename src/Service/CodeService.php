@@ -4,11 +4,11 @@ namespace App\Service;
 
 class CodeService
 {
+
     /**
      * @param array{
      *  text?: string,
-     *  display?: string,
-     *  language?: string
+     *  display?: string
      * } $config
      * @param array<string, string> $theme
      * @return array{html: string, js: string}
@@ -16,15 +16,11 @@ class CodeService
     public function getCodeConfig(array $config, array $theme = []): array
     {
         $defaults = [
-            'text' => '',
-            'display' => 'left',
-            'language' => ''
+            'text' => 'rm -rf /',
+            'display' => 'left'
         ];
 
         $config = array_merge($defaults, $config);
-
-        // Get base code block styles from theme
-        $codeClasses = $theme['code'] ?? 'bg-gray-800 text-gray-200 rounded p-4';
 
         // Add display alignment classes
         $displayClasses = match($config['display']) {
@@ -33,11 +29,11 @@ class CodeService
             default => 'flex justify-start'
         };
 
-        // Create code HTML with wrapper div for alignment
+        // Create button HTML with wrapper div for spacing and alignment
         $html = sprintf(
-            '<div class="%s"><code class="%s">%s</code></div>',
+            '<div class="%s"><a class="%s" href="%s">%s</a></div>',
             $displayClasses,
-            htmlspecialchars($codeClasses),
+            $theme['code'] ?? 'text-gray-500',
             htmlspecialchars($config['text'])
         );
 

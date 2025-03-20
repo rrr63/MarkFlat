@@ -2,6 +2,7 @@
 
 use Dotenv\Dotenv;
 use App\Component\MapComponent;
+use App\Component\CodeComponent;
 use App\Component\ButtonComponent;
 use App\Service\ComponentRegistry;
 use Twig\Extra\Markdown\DefaultMarkdown;
@@ -86,10 +87,14 @@ class Kernel extends BaseKernel
         $services->set(ButtonComponent::class)
             ->args([new Reference('App\Service\ButtonService')]);
 
+        $services->set(CodeComponent::class)
+            ->args([new Reference('App\Service\CodeService')]);
+
         // Configure Components Registry
         $services->set(ComponentRegistry::class)
             ->call('addComponent', [new Reference(MapComponent::class)])
-            ->call('addComponent', [new Reference(ButtonComponent::class)]);
+            ->call('addComponent', [new Reference(ButtonComponent::class)])
+            ->call('addComponent', [new Reference(CodeComponent::class)]);
 
         // Add translation paths to container parameters
         $container->parameters()
