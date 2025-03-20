@@ -84,6 +84,9 @@ class PageService
             return [];
         }
 
+        // Normalize line endings to \n
+        $content = str_replace(["\r\n", "\r"], "\n", $content);
+        
         if (preg_match('/^---\n(.*?)\n---\n(.*)/s', $content, $matches)) {
             return Yaml::parse($matches[1]) ?? [];
         }
