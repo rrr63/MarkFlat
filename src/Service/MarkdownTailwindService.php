@@ -7,12 +7,12 @@ use League\CommonMark\CommonMarkConverter;
 class MarkdownTailwindService
 {
     private const HEADING_STYLES = [
-        'h1' => 'text-3xl font-bold mb-4',
-        'h2' => 'text-2xl font-semibold mb-3',
-        'h3' => 'text-xl font-medium mb-2',
-        'h4' => 'text-lg font-medium mb-2',
-        'h5' => 'text-base font-medium mb-1',
-        'h6' => 'text-sm font-medium mb-1'
+        'h1' => 'text-4xl font-bold mb-4',
+        'h2' => 'text-3xl font-bold mb-3',
+        'h3' => 'text-2xl font-bold mb-2',
+        'h4' => 'text-xl font-bold mb-2',
+        'h5' => 'text-lg font-bold mb-2',
+        'h6' => 'font-bold mb-2'
     ];
 
     private const LIST_STYLES = [
@@ -40,6 +40,13 @@ class MarkdownTailwindService
         'th' => 'py-2 px-4 border-l-1 first:border-l-0',
         'td' => 'py-2 px-4 border-t-1 border-l-1 first:border-l-0'
     ];
+
+    private const COMPONENT_PLACEHOLDER = '___COMPONENT_%d___';
+
+    /**
+     * @var array<string, string>
+     */
+    private array $componentPlaceholders = [];
 
     private ThemeService $themeService;
     private ComponentRegistry $componentRegistry;
@@ -135,6 +142,10 @@ class MarkdownTailwindService
      */
     private function applyTailwindClasses(string $html, array $theme, string $baseUrl): string
     {
+        // First, protect component content
+        $this->componentPlaceholders = [];
+        $html = $this->protectComponents($html);
+
         // Apply heading styles
         foreach (self::HEADING_STYLES as $tag => $styles) {
             $html = str_replace(
@@ -169,12 +180,45 @@ class MarkdownTailwindService
         // Apply table styles
         $html = $this->applyTableStyles($html, $theme);
 
-        // Process links
+        // Process regular links
         $html = str_replace('<a ', '<a class="' . $theme['link'] . '" ', $html);
 
         // Process images with base URL
         $html = $this->processImages($html, $baseUrl);
 
+        // Restore protected components
+        $html = $this->restoreComponents($html);
+
+        return $html;
+    }
+
+    private function protectComponents(string $html): string
+    {
+        // Find all component content (anything between component tags that has a class attribute)
+        $pattern = '/<([a-z]+)\s+class="[^"]+"\s*[^>]*>.*?<\/\1>/s';
+
+        // Keep protecting components until no more are found (handles nesting)
+        $previousHtml = '';
+        while ($html !== $previousHtml) {
+            $previousHtml = $html;
+            $html = preg_replace_callback($pattern, function ($matches) {
+                $id = count($this->componentPlaceholders);
+                $placeholder = sprintf(self::COMPONENT_PLACEHOLDER, $id);
+                $this->componentPlaceholders[$placeholder] = $matches[0];
+                return $placeholder;
+            }, $html);
+        }
+
+        return $html;
+    }
+
+    private function restoreComponents(string $html): string
+    {
+        // Restore components from most deeply nested to least nested
+        $placeholders = array_reverse(array_keys($this->componentPlaceholders));
+        foreach ($placeholders as $placeholder) {
+            $html = str_replace($placeholder, $this->componentPlaceholders[$placeholder], $html);
+        }
         return $html;
     }
 

@@ -1,19 +1,29 @@
-#### Welcome to my super website
+# Modern Flat-File CMS with the Power of Symfony
 
-Here is a very simple light and user friendly flat file markdown CMS
+Build beautiful websites with pure Markdown - no database required. Markflat combines the simplicity of flat files with the robustness of Symfony and the elegance of Tailwind CSS.
 
-Write in `PHP`, `Twig`, `Symfony`, `Tailwind CSS`
+### ✨ Key Features
+- 📝 Pure Markdown content management
+- 🎨 Customizable themes
+- ⚡ Lightning-fast performance
+- 🛠️ Built on Symfony framework
+- 🎯 Zero database configuration
+- 📱 Responsive with Tailwind CSS
 
-[MAP]
+[CODE]
 {
-  "center": {"lat": 48.8566, "lng": 2.3522},
-  "zoom": 14,
-  "height": "300px",
-  "width": "50%",
-  "markers": [
-    {"lat": 48.8566, "lng": 2.3522, "popup": "Tour Eiffel"}
-  ]
+    "text": "composer create-project auvernhatinternet/markflat",
+    "display": "center"
 }
-[/MAP]
+[/CODE]
 
-![alt text for screen readers](/assets/images/PHP-logo.png "Text to show on mouseover")
+[BUTTON]
+{
+    "text": "Get Started with Documentation",
+    "link": "/page/doc",
+    "type": "big",
+    "display": "center"
+}
+[/BUTTON]
+
+[www.google.fr](https://www.google.fr)

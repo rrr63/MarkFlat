@@ -30,5 +30,7 @@ return [
     'td' => 'bg-gray-800/50',
     'blockquote' => 'bg-gray-800/50 text-teal-400 hover:bg-gray-800 border border-teal-900/50 transition-colors',
     'input' => 'bg-gray-800/50 text-teal-400 hover:bg-gray-800 border border-teal-900/50 transition-colors',
-    'button' => 'bg-gray-800/50 text-teal-400 hover:bg-gray-800 border border-teal-900/50 transition-colors'
+    'button' => 'inline-block bg-gray-800/50 text-teal-400 hover:bg-gray-800 border border-teal-900/50 transition-colors rounded',
+    'button_primary' => 'inline-block bg-gradient-to-r from-teal-400 to-blue-400 text-white hover:bg-gray-800 border border-teal-900/50 transition-colors rounded',
+    'button_big' => 'inline-block bg-gradient-to-r from-teal-400 to-blue-400 text-white hover:bg-gray-800 shadow-xl transition-colors rounded-xl my-6 py-6 px-6 text-lg'
 ];
