@@ -38,6 +38,6 @@ createDirectoryIfNotExists($destDir);
 copyFiles($sourceDir, $destDir);
 
 createDirectoryIfNotExists($tailwindDir);
-shell_exec('npx tailwindcss -i ' . __DIR__ . '/../assets/styles/input.css -o ' . __DIR__ . '/../public/css/output.css');
+shell_exec('npx tailwindcss -i ' . __DIR__ . '/../assets/styles/input.css -o ' . __DIR__ . '/../public/lib/output.css');
 
 ?>
