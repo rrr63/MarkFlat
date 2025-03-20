@@ -1,7 +1,7 @@
 ---
 title: 'Doc'
 menu_order: 2
-show_in_menu: false
+show_in_menu: true
 ---
 # Doc
 
