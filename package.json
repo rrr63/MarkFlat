@@ -6,6 +6,6 @@
   },
   "scripts": {
     "build:leaflet": "mkdir -p public/lib/leaflet && cp node_modules/leaflet/dist/* public/lib/leaflet/",
-    "build:tailwind": "npx @tailwindcss/cli -i ./assets/styles/input.css -o ./public/css/output.css"
+    "build:tailwind": "npx @tailwindcss/cli -i ./assets/styles/input.css -o ./public/lib/output.css"
   }
 }
