@@ -16,7 +16,7 @@ class CodeService
     public function getCodeConfig(array $config, array $theme = []): array
     {
         $defaults = [
-            'text' => 'rm -rf /',
+            'text' => '',
             'display' => 'left'
         ];
 
@@ -29,11 +29,11 @@ class CodeService
             default => 'flex justify-start'
         };
 
-        // Create button HTML with wrapper div for spacing and alignment
+        // Create code block HTML with wrapper div for alignment
         $html = sprintf(
-            '<div class="%s"><a class="%s" href="%s">%s</a></div>',
+            '<div class="%s"><code class="%s px-4 py-1 rounded">%s</code></div>',
             $displayClasses,
-            $theme['code'] ?? 'text-gray-500',
+            $theme['code'] ?? 'bg-gray-800 text-gray-200 rounded p-4',
             htmlspecialchars($config['text'])
         );
 

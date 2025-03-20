@@ -10,8 +10,6 @@ Build beautiful websites with pure Markdown - no database required. Markflat com
 - 🎯 Zero database configuration
 - 📱 Responsive with Tailwind CSS
 
-
-
 [CODE]
 {
     "text": "composer create-project auvernhatinternet/markflat",
