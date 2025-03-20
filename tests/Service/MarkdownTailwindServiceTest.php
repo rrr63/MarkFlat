@@ -25,7 +25,7 @@ class MarkdownTailwindServiceTest extends TestCase
     private ButtonComponent $buttonComponent;
     private CodeService $codeService;
     private CodeComponent $codeComponent;
-    
+
 
     protected function setUp(): void
     {
@@ -39,14 +39,18 @@ class MarkdownTailwindServiceTest extends TestCase
                 'content' => '',
                 'container' => '',
                 'link' => '',
-                'code' => '',
-                'pre' => '',
+                'code' => 'bg-gray-800 text-gray-200',
+                'pre' => 'bg-gray-800',
                 'title' => '',
                 'table' => '',
                 'thead' => '',
                 'th' => '',
                 'td' => '',
                 'blockquote' => '',
+                'error' => 'text-red-500',
+                'button' => 'bg-gray-800 text-gray-200',
+                'button_primary' => 'bg-blue-600 text-white',
+                'button_big' => 'text-xl py-4 px-8'
             ]);
 
         $this->mapService = new MapService();
@@ -139,5 +143,110 @@ MARKDOWN;
 
         $html = $this->service->convert($markdown);
         $this->assertStringContainsString('Error: Invalid map configuration', $html);
+    }
+
+    public function testButtonComponent(): void
+    {
+        $markdown = <<<MARKDOWN
+[BUTTON]
+{
+    "text": "Click me",
+    "link": "/test",
+    "type": "primary",
+    "display": "center"
+}
+[/BUTTON]
+MARKDOWN;
+
+        $html = $this->service->convert($markdown);
+
+        // Check button structure and classes
+        $this->assertStringContainsString('flex justify-center', $html);
+        $this->assertStringContainsString('bg-blue-600 text-white', $html);
+        $this->assertStringContainsString('href="/test"', $html);
+        $this->assertStringContainsString('>Click me</a>', $html);
+    }
+
+    public function testButtonComponentWithBigType(): void
+    {
+        $markdown = <<<MARKDOWN
+[BUTTON]
+{
+    "text": "Big Button",
+    "link": "/big",
+    "type": "big",
+    "display": "right"
+}
+[/BUTTON]
+MARKDOWN;
+
+        $html = $this->service->convert($markdown);
+
+        // Check big button specific classes
+        $this->assertStringContainsString('flex justify-end', $html);
+        $this->assertStringContainsString('text-xl py-4 px-8', $html);
+        $this->assertStringContainsString('href="/big"', $html);
+        $this->assertStringContainsString('>Big Button</a>', $html);
+    }
+
+    public function testInvalidButtonComponent(): void
+    {
+        $markdown = <<<MARKDOWN
+[BUTTON]
+invalid json
+[/BUTTON]
+MARKDOWN;
+
+        $html = $this->service->convert($markdown);
+        $this->assertStringContainsString('Error: Invalid button configuration', $html);
+    }
+
+    public function testCodeComponent(): void
+    {
+        $markdown = <<<MARKDOWN
+[CODE]
+{
+    "text": "console.log('Hello World');",
+    "display": "center"
+}
+[/CODE]
+MARKDOWN;
+
+        $html = $this->service->convert($markdown);
+
+        // Check code block structure and classes
+        $this->assertStringContainsString('flex justify-center', $html);
+        $this->assertStringContainsString('bg-gray-800 text-gray-200', $html);
+        $this->assertStringContainsString('console.log(&#039;Hello World&#039;);', $html);
+    }
+
+    public function testCodeComponentWithLeftAlignment(): void
+    {
+        $markdown = <<<MARKDOWN
+[CODE]
+{
+    "text": "composer install",
+    "display": "left"
+}
+[/CODE]
+MARKDOWN;
+
+        $html = $this->service->convert($markdown);
+
+        // Check left alignment
+        $this->assertStringContainsString('flex justify-start', $html);
+        $this->assertStringContainsString('composer install', $html);
+    }
+
+    public function testInvalidCodeComponent(): void
+    {
+        $markdown = <<<MARKDOWN
+[CODE]
+invalid json
+[/CODE]
+MARKDOWN;
+
+        $html = $this->service->convert($markdown);
+        $this->assertStringContainsString('Error: Invalid code configuration', $html);
     }
 }

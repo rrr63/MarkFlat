@@ -4,7 +4,6 @@ namespace App\Service;
 
 class CodeService
 {
-
     /**
      * @param array{
      *  text?: string,

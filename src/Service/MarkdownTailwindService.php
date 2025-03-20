@@ -196,12 +196,12 @@ class MarkdownTailwindService
     {
         // Find all component content (anything between component tags that has a class attribute)
         $pattern = '/<([a-z]+)\s+class="[^"]+"\s*[^>]*>.*?<\/\1>/s';
-        
+
         // Keep protecting components until no more are found (handles nesting)
         $previousHtml = '';
         while ($html !== $previousHtml) {
             $previousHtml = $html;
-            $html = preg_replace_callback($pattern, function($matches) {
+            $html = preg_replace_callback($pattern, function ($matches) {
                 $id = count($this->componentPlaceholders);
                 $placeholder = sprintf(self::COMPONENT_PLACEHOLDER, $id);
                 $this->componentPlaceholders[$placeholder] = $matches[0];
