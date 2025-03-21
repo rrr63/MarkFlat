@@ -2,10 +2,16 @@
   "dependencies": {
     "@tailwindcss/cli": "^4.0.13",
     "leaflet": "^1.9.4",
-    "tailwindcss": "^4.0.13"
+    "tailwindcss": "^4.0.13",
+    "cssnano": "^6.0.1",
+    "sharp": "^0.33.1",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^10.1.0"
   },
   "scripts": {
     "build:leaflet": "mkdir -p public/lib/leaflet && cp node_modules/leaflet/dist/* public/lib/leaflet/",
-    "build:tailwind": "npx @tailwindcss/cli -i ./assets/styles/input.css -o ./public/lib/output.css"
+    "build:tailwind": "npx @tailwindcss/cli -i ./assets/styles/input.css -o ./public/lib/output.css --minify",
+    "optimize:images": "node scripts/optimize-images.js",
+    "build": "npm run build:tailwind && npm run build:leaflet && npm run optimize:images"
   }
 }
