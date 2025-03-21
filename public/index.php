@@ -7,12 +7,10 @@ use App\Component\ButtonComponent;
 use App\Service\ComponentRegistry;
 use Twig\Extra\Markdown\DefaultMarkdown;
 use Symfony\Bundle\TwigBundle\TwigBundle;
+use MarkFlat\MarkFlatEditor\MarkFlatEditorBundle;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Bundle\TranslationBundle\TranslationBundle;
-use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -23,6 +21,8 @@ class Kernel extends BaseKernel
     use MicroKernelTrait;
 
     private $markdown;
+    private const EDITOR_BUNDLE_PATH = '/vendor/markflat/markflat-editor';
+    private const EDITOR_CONFIG_PATH = '/src/Resources/config';
 
     public function __construct(string $environment, bool $debug)
     {
@@ -30,23 +30,48 @@ class Kernel extends BaseKernel
         $this->markdown = new DefaultMarkdown();
     }
 
+    private function getRootDir(): string
+    {
+        return dirname(__DIR__);
+    }
+
+    private function isEditorBundleInstalled(): bool
+    {
+        return is_dir($this->getEditorBundlePath());
+    }
+
+    private function getEditorBundlePath(): string
+    {
+        return $this->getRootDir().self::EDITOR_BUNDLE_PATH;
+    }
+
+    private function getEditorBundleConfigPath(): string
+    {
+        return $this->getEditorBundlePath().self::EDITOR_CONFIG_PATH;
+    }
+
     public function registerBundles(): iterable
     {
         yield new \Symfony\Bundle\FrameworkBundle\FrameworkBundle();
         yield new TwigBundle();
         yield new TwigExtraBundle();
+        
+        if ($this->isEditorBundleInstalled()) {
+            yield new MarkFlatEditorBundle();
+        }
     }
 
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $defaultLocale = $_ENV['MF_CMS_DEFAULT_LOCALE'] ?? 'fr';
         $supportedLocales = json_decode($_ENV['MF_CMS_SUPPORTED_LOCALES'] ?? '["fr","en"]', true);
-        $projectDir = $this->getProjectDir();
+        $projectDir = $this->getRootDir();
 
         $container->extension('framework', [
             'secret' => 'S0ME_SECRET',
             'router' => [
-                'utf8' => true
+                'utf8' => true,
+                'resource' => 'kernel::loadRoutes'
             ],
             'default_locale' => $defaultLocale,
             'translator' => [
@@ -67,6 +92,12 @@ class Kernel extends BaseKernel
                 'supported_locales' => $supportedLocales
             ]
         ]);
+
+        if ($this->isEditorBundleInstalled()) {
+            $container->extension('mark_flat_editor', [
+                'admin_password' => $_ENV['MARKFLAT_EDITOR_ADMIN_PASSWORD'] ?? 'admin'
+            ]);
+        }
 
         // Configure services
         $services = $container->services();
@@ -105,6 +136,11 @@ class Kernel extends BaseKernel
     protected function configureRoutes($routes): void
     {
         $routes->import('../src/Controller/', 'attribute');
+        
+        // Import MarkFlatEditor routes if the bundle is installed
+        if ($this->isEditorBundleInstalled()) {
+            $routes->import($this->getEditorBundleConfigPath().'/routes.yaml', 'yaml');
+        }
     }   
 }
 
