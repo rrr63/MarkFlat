@@ -3,10 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ render(path('var-render', { var: 'MF_CMS_SITE_NAME' })) }}{% endblock %}</title>
-    <link href="{{asset('lib/output.css')}}" rel="stylesheet">
-    <link href="{{asset('lib/leaflet/leaflet.css')}}" rel="stylesheet">
-    <script src="{{asset('lib/leaflet/leaflet.js')}}"></script>
+    
+    {# SEO Metadata #}
+    {% set metadata = seo.getMetadata(block('title'), block('meta_description')) %}
+    <title>{{ metadata.title }}</title>
+    <meta name="description" content="{{ metadata.description }}">
+    <meta name="robots" content="{{ metadata.robots }}">
+    <link rel="canonical" href="{{ app.request.schemeAndHttpHost }}{{ app.request.requestUri }}" />
+    
+    {# Open Graph / Twitter #}
+    <meta property="og:title" content="{{ metadata['og:title'] }}">
+    <meta property="og:description" content="{{ metadata['og:description'] }}">
+    <meta property="og:type" content="{{ metadata['og:type'] }}">
+    <meta property="og:url" content="{{ app.request.schemeAndHttpHost }}{{ app.request.requestUri }}">
+    <meta name="twitter:card" content="{{ metadata['twitter:card'] }}">
+    
+    {# Structured Data #}
+    {% if structured_data is defined %}
+    <script type="application/ld+json">
+        {{ structured_data|json_encode()|raw }}
+    </script>
+    {% endif %}
+    
+    {# Performance Optimizations #}
+    <link rel="preconnect" href="{{ asset('') }}" crossorigin>
+    <link rel="dns-prefetch" href="{{ asset('') }}">
+    
+    {# Critical CSS inline #}
+    <style>
+        /* Styles critiques minifiés */
+        .container{width:100%;margin-right:auto;margin-left:auto;padding-right:1rem;padding-left:1rem}
+        .min-h-full{min-height:100%}
+        .flex{display:flex}
+        .flex-col{flex-direction:column}
+        .flex-grow{flex-grow:1}
+    </style>
+    
+    {# Preload critical assets #}
+    <link rel="preload" href="{{asset('lib/output.css')}}" as="style">
+    <link rel="preload" href="{{asset('lib/leaflet/leaflet.css')}}" as="style">
+    <link rel="preload" href="{{asset('lib/leaflet/leaflet.js')}}" as="script">
+    
+    {# Load CSS with media queries for non-critical stylesheets #}
+    <link href="{{asset('lib/output.css')}}" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="{{asset('lib/leaflet/leaflet.css')}}" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="{{asset('lib/output.css')}}" rel="stylesheet">
+        <link href="{{asset('lib/leaflet/leaflet.css')}}" rel="stylesheet">
+    </noscript>
+    
+    {# Defer non-critical JS #}
+    <script src="{{asset('lib/leaflet/leaflet.js')}}" defer></script>
 </head>
 <body class="{{ theme('body') }} min-h-full flex flex-col">
     {{ render(path('nav' , {
